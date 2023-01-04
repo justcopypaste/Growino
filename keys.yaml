@@ -1,8 +1,0 @@
-aws_db_url: growino-db.cluster-czgjviuxqkxo.sa-east-1.rds.amazonaws.com:5432
-aws_db_pass: 0WrivbeSbXMmTxFX
-
-mongo_url: mongodb+srv://joako:0WrivbeSbXMmTxFX@cluster0.5pbyj4f.mongodb.net/?retryWrites=true&w=majority
-
-supabase_pass: 0WrivbeSbXMmTxFX
-supabase_url: https://jrtwsiiecsikldwyqcma.supabase.co
-supabase_api_key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpydHdzaWllY3Npa2xkd3lxY21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzI4NDA3OTgsImV4cCI6MTk4ODQxNjc5OH0.BZp7fFAbWZRgjUAEw_dCYrBO1tTu-D2JVFXl-2n2KUM
