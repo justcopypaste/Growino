@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const {CamDB, Cam} = require('./models/cam')
 
 const initDB = async () => {
-    const connectionUrl = process.env.DB_CONNECTION_STRING || "mongodb+srv://joako:0WrivbeSbXMmTxFX@cluster0.5pbyj4f.mongodb.net/?retryWrites=true&w=majority"
+    const connectionUrl = process.env.DB_CONNECTION_STRING || "mongodb+srv://joako:0WrivbeSbXMmTxFX@cluster0.5pbyj4f.mongodb.net/Growino?retryWrites=true&w=majority"
     try {
         mongoose.connect(connectionUrl, {
             useNewUrlParser: true,
