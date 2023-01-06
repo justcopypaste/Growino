@@ -3,8 +3,9 @@ const app = express()
 const nunjucks = require('nunjucks')
 const db = require('./database')
 const camRoutes = require('./routes/camRoutes')
+const sensorRoutes = require('./routes/sensorRoutes')
 
-const port = process.env.port || 3000
+const port = process.env.port || 6969
 
 db.initDB();
 
@@ -18,6 +19,7 @@ app.use(express.static(__dirname + '/public'))
 app.set("view engine", "njk")
 
 app.use("/cam", camRoutes);
+app.use("/sensor", sensorRoutes);
 
 app.get('/', (req, res) => {
     db.getCam(0).then((cam)=>{
