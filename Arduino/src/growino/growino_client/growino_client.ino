@@ -10,13 +10,16 @@
 ESP8266WiFiMulti wifiMulti;
 DHT dht(DHTPIN, DHTTYPE);
 
+HTTPClient http;   
+WiFiClient wifiClient;
+
 const char* ssid = "Crablock";
 const char* password = "notengoidea";
 
 String serverName = "http://growino.pidu.uy/sensor/";
 
 unsigned long lastTime = 0;
-unsigned long timerDelay = 120000;
+unsigned long timerDelay = 600000;
 
 String hum = "0.0";
 String temp = "0.0";
@@ -25,7 +28,6 @@ String temp = "0.0";
 void setup() {
   Serial.begin(115200); 
   dht.begin();
-
   delay(4000);
   wifiMulti.addAP(ssid, password);
   Serial.println("conectando");
@@ -35,17 +37,17 @@ void setup() {
   }
   Serial.println("");
   getReadings();
-  delay(1000);
+  delay(500);
   postDataToServer();
 }
 
 void loop() {
-  //Send an HTTP POST request every 2 minutes
+  //Send an HTTP POST request every 10 minutes
   if ((millis() - lastTime) > timerDelay) {
-    lastTime = millis();
-
     postDataToServer();
+    lastTime = millis();
   }
+  delay(500);
 }
 
 void postDataToServer() {
@@ -55,8 +57,7 @@ void postDataToServer() {
  
   // Block until we are able to connect to the WiFi access point
   if (wifiMulti.run() == WL_CONNECTED) {
-    HTTPClient http;   
-  
+    http.begin(wifiClient, url);  
     http.addHeader("Content-Type", "application/json");         
      
     StaticJsonDocument<200> doc; //JSON Object
@@ -70,17 +71,8 @@ void postDataToServer() {
     String requestBody;
     serializeJson(doc, requestBody);
      
-    int httpResponseCode = http.POST(requestBody);
- 
-    Serial.println("Posting JSON data to server: " + requestBody);
-    if(httpResponseCode>0){
-      String response = http.getString();                       
-       
-      Serial.println(httpResponseCode);   
-      Serial.println(response);
-    } else {
-      Serial.printf("Error occurred while sending HTTP POST response code: " + httpResponseCode);
-    }
+    http.POST(requestBody);
+  Serial.println("Posting Data To Server");
   }
 }
 
