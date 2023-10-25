@@ -5,7 +5,7 @@ const db = require('./database')
 const camRoutes = require('./routes/camRoutes')
 const sensorRoutes = require('./routes/sensorRoutes')
 
-const port = process.env.port || 6969
+const port = process.env.port || 443
 
 db.initDB();
 
@@ -22,13 +22,14 @@ app.use("/cam", camRoutes);
 app.use("/sensor", sensorRoutes);
 
 app.get('/', (req, res) => {
-    db.getCam(0).then((cam)=>{
-        if(cam){
-            res.render("index", { camUrl: cam.ip })
-        }else{
-            res.render("index", { camUrl: "" })
-        }
-    })
+    res.render("index", { camUrl: "" })
+    // db.getCam(0).then((cam)=>{
+    //     if(cam){
+    //         res.render("index", { camUrl: cam.ip })
+    //     }else{
+    //         res.render("index", { camUrl: "" })
+    //     }
+    // })
 })
 
 app.listen(port, ()=>{
