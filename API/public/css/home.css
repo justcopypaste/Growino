@@ -24,7 +24,7 @@ header {
 
 header a {
   color: black;
-  font-size: 1.7rem;
+  font-size: 1.3rem;
   text-decoration: none;
   text-transform: uppercase;
   font-weight: bold;
@@ -35,18 +35,28 @@ header a:hover {
   color: var(--primary-color);
 }
 
+.main-nav {
+  width: 100vw;
+  display: flex;
+  align-items: center;
+}
+
 .left-container,
 .links-container {
   width: 50%;
-  border-bottom: solid 0.5rem black;
+  border-bottom: solid 5px black;
   height: 6vh;
   align-items: center;
   display: flex;
 }
 
-.logo {
+.logo-pc {
   height: 6vw;
   margin: 0px 1.3vw;
+}
+
+.app-name{
+  display: none;
 }
 
 .links-container {
@@ -59,19 +69,22 @@ header a:hover {
   height: 100%;
 }
 
-.switch-theme.active img{
-    content: url("/images/dark-switch.png");
+.switch-theme.active img {
+  content: url("/images/dark-switch.png");
 }
 
-.switch-theme img{
-    width: 7vh;
-    margin: 1vh;
-    content: url("/images/light-switch.png");
+.switch-theme img {
+  width: 7vh;
+  margin: 1vh;
+  content: url("/images/light-switch.png");
 }
-
 
 .desciption-container {
   max-width: 50vw;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .desciption-container .title {
@@ -107,4 +120,111 @@ header a:hover {
 
 .plants img {
   width: 12vw;
+}
+
+.mobile-logo {
+  display: none;
+}
+
+.hamburger-menu {
+  display: none; /* Initially hide the hamburger menu on larger screens */
+  width: 30px; /* Adjust the width as needed */
+  height: 24px; /* Adjust the height as needed */
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer; /* Indicates it's clickable */
+  z-index: 999;
+  right: 3vw;
+  position: absolute;
+}
+
+.hamburger-menu span {
+  display: block;
+  width: 100%;
+  height: 4px; /* Thickness of each line */
+  background-color: #000; /* Color of the lines. Adjust as needed */
+}
+
+.logo-pc{
+
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  /* This width can be adjusted based on when you want the mobile layout to take effect */
+  .main-nav {
+    display: none; /* Initially hide the navigation links */
+    flex-direction: column;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    background-color: white;
+    margin: 0px;
+  }
+
+  .hamburger-menu {
+    display: flex !important; /* Show the hamburger menu icon on mobile */
+  }
+
+  .main-nav a {
+    display: block; /* Display links as block elements on mobile for full-width touch target */
+    border-bottom: 1px solid #ddd; /* Add a subtle border between links */
+    margin: 10px 0px;
+    font-size: 2vh;
+  }
+
+  .main-nav.show {
+    display: flex; /* Display the navigation links when the menu is toggled */
+    align-items: center;
+    justify-content: center;
+  }
+
+  .left-container,
+  .links-container {
+    border-bottom: none;
+    flex-direction: column;
+    height: max-content;
+  }
+
+  .switch-theme {
+    display: none !important;
+  }
+
+  header {
+    margin-bottom: 5vh;
+  }
+
+  .top-container img {
+    display: none;
+  }
+
+  .desciption-container {
+    max-width: 80vw;
+  }
+
+  .desciption-container .title {
+    font-size: 5vw;
+  }
+
+  .desciption-container .description {
+    font-size: 2.5vw;
+  }
+
+  .mobile-logo {
+    display: flex !important;
+    width: 20vw !important;
+    margin-bottom: 2vh;
+  }
+
+  .logo-pc{
+    display: none;
+  }
+
+  .app-name{
+    display: block;
+    margin: 0 1vw;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 2.5vh;
+  }
 }
