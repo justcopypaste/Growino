@@ -22,7 +22,7 @@ app.use("/cam", camRoutes);
 app.use("/sensor", sensorRoutes);
 
 app.get('/', (req, res) => {
-    res.render("index", { camUrl: "" })
+    res.render("views/home.html")
     // db.getCam(0).then((cam)=>{
     //     if(cam){
     //         res.render("index", { camUrl: cam.ip })
