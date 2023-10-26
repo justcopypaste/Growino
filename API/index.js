@@ -5,7 +5,7 @@ const db = require('./database')
 const camRoutes = require('./routes/camRoutes')
 const sensorRoutes = require('./routes/sensorRoutes')
 
-const port = process.env.port || 443
+const port = process.env.port || 80
 
 db.initDB();
 
