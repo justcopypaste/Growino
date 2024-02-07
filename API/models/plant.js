@@ -1,11 +1,17 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const plantDataScheme = new mongoose.Schema({
-    id: {type: Number, autoIncrement: true},
-    soil: String,
+const plantDataScheme = new mongoose.Schema(
+  {
+    id: Number,
     name: String,
-})
+    soil: String,
+    strain: String,
+    tent: Number,
+    plantedDate: Date,
+  },
+  { timestamps: true }
+);
 
-const PlantData = mongoose.model("plants", plantDataScheme)
+const PlantData = mongoose.model("plants", plantDataScheme);
 
-module.exports = PlantData 
+module.exports = PlantData;
