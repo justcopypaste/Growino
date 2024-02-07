@@ -4,6 +4,7 @@ const nunjucks = require('nunjucks')
 const db = require('./database')
 const camRoutes = require('./routes/camRoutes')
 const sensorRoutes = require('./routes/sensorRoutes')
+const plantRoutes = require('./routes/plantsRoutes')
 
 const port = process.env.port || 80
 
@@ -20,6 +21,7 @@ app.set("view engine", "njk")
 
 app.use("/cam", camRoutes);
 app.use("/sensor", sensorRoutes);
+app.use("/plant", plantRoutes);
 
 app.get('/', (req, res) => {
     res.render("views/home.html")

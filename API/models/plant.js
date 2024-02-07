@@ -4,7 +4,7 @@ const plantDataScheme = new mongoose.Schema(
   {
     id: Number,
     name: String,
-    soil: String,
+    soil: Number,
     strain: String,
     tent: Number,
     plantedDate: Date,
