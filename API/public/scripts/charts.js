@@ -84,49 +84,49 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   });
 
-  const tempDonut = document.getElementById("temp-donut");
-  new Chart(tempDonut, {
-    type: "doughnut",
-    data: {
-      labels: {
-        display: false,
-      },
-      datasets: [
-        {
-          label: "Temperatura",
-          data: [26, 14],
-          backgroundColor: ["#FF6384", "#202020"],
-          hoverBackgroundColor: ["#36A2EB", "#202020"],
-        },
-      ],
-    },
-    options: {
-      borderWidth: 0,
-      cutout: cutout,
-    },
-  });
+  //   const tempDonut = document.getElementById("temp-donut");
+  //   new Chart(tempDonut, {
+  //     type: "doughnut",
+  //     data: {
+  //       labels: {
+  //         display: false,
+  //       },
+  //       datasets: [
+  //         {
+  //           label: "Temperatura",
+  //           data: [26, 14],
+  //           backgroundColor: ["#FF6384", "#202020"],
+  //           hoverBackgroundColor: ["#36A2EB", "#202020"],
+  //         },
+  //       ],
+  //     },
+  //     options: {
+  //       borderWidth: 0,
+  //       cutout: cutout,
+  //     },
+  //   });
 
-  const humDonut = document.getElementById("hum-donut");
-  new Chart(humDonut, {
-    type: "doughnut",
-    data: {
-      labels: {
-        display: false,
-      },
-      datasets: [
-        {
-          label: "Humedad",
-          data: [54, 36],
-          backgroundColor: ["#36A2EB", "#202020"],
-          hoverBackgroundColor: ["#FF6384", "#202020"],
-        },
-      ],
-    },
-    options: {
-      borderWidth: 0,
-      cutout: cutout,
-    },
-  });
+//   const humDonut = document.getElementById("hum-donut");
+//   new Chart(humDonut, {
+//     type: "doughnut",
+//     data: {
+//       labels: {
+//         display: false,
+//       },
+//       datasets: [
+//         {
+//           label: "Humedad",
+//           data: [54, 36],
+//           backgroundColor: ["#36A2EB", "#202020"],
+//           hoverBackgroundColor: ["#FF6384", "#202020"],
+//         },
+//       ],
+//     },
+//     options: {
+//       borderWidth: 0,
+//       cutout: cutout,
+//     },
+//   });
 
   const powerDonut = document.getElementById("power-donut");
   new Chart(powerDonut, {
@@ -177,13 +177,75 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function getSensorData() {
   fetch("http://54.232.146.12/sensor/get?tent=1", {
-    headers: { "User-Agent": "PostmanRuntime/7.29.2", "Content-Type": "application/json" },
+    headers: {
+      "User-Agent": "PostmanRuntime/7.29.2",
+      "Content-Type": "application/json",
+    },
   })
-    .then(data.json())
+    .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      let temp = [],
+        hum = [];
+
+      for (const reading of data) {
+        if (reading.temperature) {
+          temp.push(reading.temperature);
+          hum.push(reading.humidity);
+        }
+      }
+
+      const donutOptions = {
+        borderWidth: 0,
+        cutout: cutout,
+      };
+
+      const tempData = {
+        labels: {
+          display: false,
+        },
+        datasets: [
+          {
+            label: "Temperatura",
+            data: [temp[0], 40-temp[0]],
+            backgroundColor: ["#FF6384", "#202020"],
+            hoverBackgroundColor: ["#36A2EB", "#202020"],
+          },
+        ],
+      };
+
+      const tempDonut = document.getElementById("temp-donut");
+      createChart(tempDonut, tempData, "doughnut", donutOptions, "⁰");
+
+      const humData = {
+        labels: {
+          display: false,
+        },
+        datasets: [
+          {
+            label: "Humedad",
+            data: [100 - hum[0], hum[0]],
+            backgroundColor: ["#36A2EB", "#202020"],
+            hoverBackgroundColor: ["#FF6384", "#202020"],
+          },
+        ],
+      };
+
+      const humDonut = document.getElementById("hum-donut");
+      createChart(humDonut, humData, "doughnut", donutOptions, "%");
     })
     .catch((err) => {
       console.error(err);
     });
+}
+
+function createChart(view, data, type, options, unit) {
+  var valueContainer =
+    view.parentElement.getElementsByClassName("donut-value")[0];
+
+  valueContainer.innerHTML = parseInt(data.datasets[0].data[0]) + unit;
+  new Chart(view, {
+    type: type,
+    data: data,
+    options: options,
+  });
 }
