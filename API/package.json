@@ -10,10 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "compile-sass": "^2.0.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "mongoose": "^6.8.2",
     "node-rtsp-stream": "^0.0.9",
-    "nunjucks": "^3.2.3"
+    "nunjucks": "^3.2.3",
+    "sass": "^1.70.0"
   }
 }

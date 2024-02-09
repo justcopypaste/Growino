@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growino Dashboard</title>
+    <link rel="stylesheet" href="../css/charts.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="charts">
+        <div class="chart" id="top-left">
+            <div class="donuts">
+                <div class="donut-container">
+                    <div class="donut-inner">
+                        <canvas class="donut" id="temp-donut"></canvas>
+                        <h1 class="donut-value">26⁰</h1>
+                    </div>
+                    
+                    <h3 class="donut-title">Temperatura</h3>
+                </div>
+                <div class="donut-container">
+                    <div class="donut-inner">
+                        <canvas class="donut" id="hum-donut"></canvas>
+                        <h1 class="donut-value">54%</h1>
+                    </div>
+                    
+                    <h3 class="donut-title">Humedad</h3>
+                </div>
+                <div class="donut-container">
+                    <div class="donut-inner">
+                        <canvas class="donut" id="light-donut"></canvas>
+                        <h1 class="donut-value">02:41</h1>
+                    </div>
+                    
+                    <h3 class="donut-title">Luz</h3>
+                </div>
+                <div class="donut-container">
+                    <div class="donut-inner">
+                        <canvas class="donut" id="power-donut"></canvas>
+                        <h1 class="donut-value">400w</h1>
+                    </div>
+                    
+                    <h3 class="donut-title">Consumo</h3>
+                </div>
+            </div>
+        </div>
+        <div class="chart">
+            <canvas id="power-chart"></canvas>
+        </div>
+        <div class="chart">
+            <canvas id="temp-chart"></canvas>
+        </div>
+        <div class="chart">
+            <canvas id="soil-chart"></canvas>
+        </div>
+    </div>
+
+    <script src="../scripts/charts.js"></script>
+</body>
+
+</html>

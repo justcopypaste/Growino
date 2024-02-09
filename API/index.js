@@ -25,13 +25,18 @@ app.use("/plant", plantRoutes);
 
 app.get('/', (req, res) => {
     res.render("views/home.html")
-    // db.getCam(0).then((cam)=>{
-    //     if(cam){
-    //         res.render("index", { camUrl: cam.ip })
-    //     }else{
-    //         res.render("index", { camUrl: "" })
-    //     }
-    // })
+})
+app.get('/dash', (req, res) => {
+    res.render("views/dashboard.html")
+})
+app.get('/cam', (req, res) => {
+    db.getCam(0).then((cam)=>{
+        if(cam){
+            res.render("index", { camUrl: cam.ip })
+        }else{
+            res.render("index", { camUrl: "" })
+        }
+    })
 })
 
 app.listen(port, ()=>{

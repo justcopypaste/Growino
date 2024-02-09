@@ -4,7 +4,7 @@ const sensorDataScheme = new mongoose.Schema(
   {
     temperature: String,
     humidity: String,
-    soil: Array,
+    soil: String,
   },
   { timestamps: true }
 );

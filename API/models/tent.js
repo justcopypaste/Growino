@@ -4,8 +4,6 @@ const tentDataScheme = new mongoose.Schema(
   {
     id: Number,
     name: String,
-    temperature: String,
-    humidity: String,
     lightOn: Date,
     lightOff: Date,
   },
