@@ -29,6 +29,9 @@ app.get('/', (req, res) => {
 app.get('/dash', (req, res) => {
     res.render("views/dashboard.html")
 })
+app.get('/charts', (req, res) => {
+    res.render("views/charts.html")
+})
 app.get('/cam', (req, res) => {
     db.getCam(0).then((cam)=>{
         if(cam){

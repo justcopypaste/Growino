@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             datasets: [
                 {
-                    label: 'Consumo',
+                    label: 'Temperatura',
                     data: [26, 14],
                     backgroundColor: [
                         "#FF6384",
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             datasets: [
                 {
-                    label: 'Consumo',
+                    label: 'Humedad',
                     data: [54, 36],
                     backgroundColor: [
                         "#36A2EB",
