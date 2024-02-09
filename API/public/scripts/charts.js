@@ -84,93 +84,27 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   });
 
-  //   const tempDonut = document.getElementById("temp-donut");
-  //   new Chart(tempDonut, {
-  //     type: "doughnut",
-  //     data: {
-  //       labels: {
-  //         display: false,
+  // const lightDonut = document.getElementById("light-donut");
+  // new Chart(lightDonut, {
+  //   type: "doughnut",
+  //   data: {
+  //     labels: {
+  //       display: false,
+  //     },
+  //     datasets: [
+  //       {
+  //         label: "Luz",
+  //         data: [30, 60],
+  //         backgroundColor: ["#4f4f4f", "#202020"],
+  //         hoverBackgroundColor: ["#FF6384", "#202020"],
   //       },
-  //       datasets: [
-  //         {
-  //           label: "Temperatura",
-  //           data: [26, 14],
-  //           backgroundColor: ["#FF6384", "#202020"],
-  //           hoverBackgroundColor: ["#36A2EB", "#202020"],
-  //         },
-  //       ],
-  //     },
-  //     options: {
-  //       borderWidth: 0,
-  //       cutout: cutout,
-  //     },
-  //   });
-
-//   const humDonut = document.getElementById("hum-donut");
-//   new Chart(humDonut, {
-//     type: "doughnut",
-//     data: {
-//       labels: {
-//         display: false,
-//       },
-//       datasets: [
-//         {
-//           label: "Humedad",
-//           data: [54, 36],
-//           backgroundColor: ["#36A2EB", "#202020"],
-//           hoverBackgroundColor: ["#FF6384", "#202020"],
-//         },
-//       ],
-//     },
-//     options: {
-//       borderWidth: 0,
-//       cutout: cutout,
-//     },
-//   });
-
-  const powerDonut = document.getElementById("power-donut");
-  new Chart(powerDonut, {
-    type: "doughnut",
-    data: {
-      labels: {
-        display: false,
-      },
-      datasets: [
-        {
-          label: "Consumo",
-          data: [40, 60],
-          backgroundColor: ["#FFCE56", "#202020"],
-          hoverBackgroundColor: ["#FF6384", "#202020"],
-        },
-      ],
-    },
-    options: {
-      borderWidth: 0,
-      cutout: cutout,
-    },
-  });
-
-  const lightDonut = document.getElementById("light-donut");
-  new Chart(lightDonut, {
-    type: "doughnut",
-    data: {
-      labels: {
-        display: false,
-      },
-      datasets: [
-        {
-          label: "Luz",
-          data: [30, 60],
-          backgroundColor: ["#4f4f4f", "#202020"],
-          hoverBackgroundColor: ["#FF6384", "#202020"],
-        },
-      ],
-    },
-    options: {
-      borderWidth: 0,
-      cutout: cutout,
-    },
-  });
+  //     ],
+  //   },
+  //   options: {
+  //     borderWidth: 0,
+  //     cutout: cutout,
+  //   },
+  // });
 
   getSensorData();
 });
@@ -185,12 +119,14 @@ function getSensorData() {
     .then((res) => res.json())
     .then((data) => {
       let temp = [],
-        hum = [];
+        hum = [],
+        power = [];
 
       for (const reading of data) {
         if (reading.temperature) {
           temp.push(reading.temperature);
           hum.push(reading.humidity);
+          power.push(reading.power)
         }
       }
 
@@ -206,7 +142,7 @@ function getSensorData() {
         datasets: [
           {
             label: "Temperatura",
-            data: [temp[0], 40-temp[0]],
+            data: [temp[0], 40 - temp[0]],
             backgroundColor: ["#FF6384", "#202020"],
             hoverBackgroundColor: ["#36A2EB", "#202020"],
           },
@@ -232,6 +168,23 @@ function getSensorData() {
 
       const humDonut = document.getElementById("hum-donut");
       createChart(humDonut, humData, "doughnut", donutOptions, "%");
+
+      const powerData = {
+        labels: {
+          display: false,
+        },
+        datasets: [
+          {
+            label: "Consumo",
+            data: [power[0], 600-power[0]],
+            backgroundColor: ["#FFCE56", "#202020"],
+            hoverBackgroundColor: ["#FF6384", "#202020"],
+          },
+        ],
+      };
+
+      const powerDonut = document.getElementById("power-donut");
+      createChart(powerDonut, powerData, "doughnut", donutOptions, "w");
     })
     .catch((err) => {
       console.error(err);
