@@ -1,10 +1,13 @@
 const express = require('express')
+const cors = require('cors')
 const app = express()
 const nunjucks = require('nunjucks')
 const db = require('./database')
 const camRoutes = require('./routes/camRoutes')
 const sensorRoutes = require('./routes/sensorRoutes')
 const plantRoutes = require('./routes/plantsRoutes')
+
+app.use(cors())
 
 const port = process.env.port || 80
 
