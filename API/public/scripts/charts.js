@@ -1,38 +1,9 @@
-const cutout = 0;
+let temp = [],
+  hum = [],
+  power = [],
+  soil = [];
 
 document.addEventListener("DOMContentLoaded", () => {
-  const soilChart = document.getElementById("soil-chart");
-  new Chart(soilChart, {
-    type: "line",
-    data: {
-      labels: ["22:00", "22:30", "23:00", "23:30", "00:00", "00:30"],
-      datasets: [
-        {
-          label: "White Widow",
-          data: [76, 54, 43, 81, 56, 39],
-          borderWidth: 2,
-        },
-        {
-          label: "Cream Caramel",
-          data: [54, 43, 76, 56, 42, 81],
-          borderWidth: 2,
-        },
-        {
-          label: "Amnesia",
-          data: [32, 83, 60, 41, 79, 62],
-          borderWidth: 2,
-        },
-      ],
-    },
-    options: {
-      scales: {
-        y: {
-          min: 0,
-          max: 100,
-        },
-      },
-    },
-  });
 
   const powerChart = document.getElementById("power-chart");
   new Chart(powerChart, {
@@ -118,9 +89,6 @@ function getSensorData() {
   })
     .then((res) => res.json())
     .then((data) => {
-      let temp = [],
-        hum = [],
-        power = [];
 
       for (const reading of data) {
         if (reading.temperature) {
@@ -129,66 +97,125 @@ function getSensorData() {
           power.push(reading.power)
         }
       }
+      soil = data[0].soil
 
-      const donutOptions = {
-        borderWidth: 0,
-        cutout: cutout,
-      };
+      console.log(data[0]);
 
-      const tempData = {
-        labels: {
-          display: false,
-        },
-        datasets: [
-          {
-            label: "Temperatura",
-            data: [temp[0], 40 - temp[0]],
-            backgroundColor: ["#FF6384", "#202020"],
-            hoverBackgroundColor: ["#36A2EB", "#202020"],
-          },
-        ],
-      };
-
-      const tempDonut = document.getElementById("temp-donut");
-      createChart(tempDonut, tempData, "doughnut", donutOptions, "⁰");
-
-      const humData = {
-        labels: {
-          display: false,
-        },
-        datasets: [
-          {
-            label: "Humedad",
-            data: [100 - hum[0], hum[0]],
-            backgroundColor: ["#36A2EB", "#202020"],
-            hoverBackgroundColor: ["#FF6384", "#202020"],
-          },
-        ],
-      };
-
-      const humDonut = document.getElementById("hum-donut");
-      createChart(humDonut, humData, "doughnut", donutOptions, "%");
-
-      const powerData = {
-        labels: {
-          display: false,
-        },
-        datasets: [
-          {
-            label: "Consumo",
-            data: [power[0], 600-power[0]],
-            backgroundColor: ["#FFCE56", "#202020"],
-            hoverBackgroundColor: ["#FF6384", "#202020"],
-          },
-        ],
-      };
-
-      const powerDonut = document.getElementById("power-donut");
-      createChart(powerDonut, powerData, "doughnut", donutOptions, "w");
+      generateCharts()
     })
     .catch((err) => {
       console.error(err);
     });
+}
+
+function generateCharts() {
+  const donutOptions = {
+    borderWidth: 0,
+    cutout: 0,
+  };
+
+  // TEMPERATURE
+  const tempData = {
+    labels: {
+      display: false,
+    },
+    datasets: [
+      {
+        label: "Temperatura",
+        data: [temp[0], 40 - temp[0]],
+        backgroundColor: ["#FF6384", "#202020"],
+        hoverBackgroundColor: ["#FF6384", "#202020"],
+      },
+    ],
+  };
+
+  const tempDonut = document.getElementById("temp-donut");
+  createChart(tempDonut, tempData, "doughnut", donutOptions, "⁰");
+  // 
+
+  // HUMIDITY
+  const humData = {
+    labels: {
+      display: false,
+    },
+    datasets: [
+      {
+        label: "Humedad",
+        data: [hum[0], 100 - hum[0]],
+        backgroundColor: ["#36A2EB", "#202020"],
+        hoverBackgroundColor: ["#36A2EB", "#202020"],
+      },
+    ],
+  };
+
+  const humDonut = document.getElementById("hum-donut");
+  createChart(humDonut, humData, "doughnut", donutOptions, "%");
+  // 
+
+  // POWER
+  const powerData = {
+    labels: {
+      display: false,
+    },
+    datasets: [
+      {
+        label: "Consumo",
+        data: [power[0], 600 - power[0]],
+        backgroundColor: ["#FFCE56", "#202020"],
+        hoverBackgroundColor: ["#FFCE56", "#202020"],
+      },
+    ],
+  };
+
+  const powerDonut = document.getElementById("power-donut");
+  createChart(powerDonut, powerData, "doughnut", donutOptions, "w");
+  // 
+
+  // SOIL
+  var soilDataset = []
+  for (const s of soil) {
+    soilDataset.push({
+      label: "White Widow",
+      data: [76, 54, 43, 81, 56, 39],
+      borderWidth: 2,
+    })
+  }
+  const soilData = {
+    labels: ["22:00", "22:30", "23:00", "23:30", "00:00", "00:30"],
+    datasets: [
+      {
+        label: "White Widow",
+        data: [76, 54, 43, 81, 56, 39],
+        borderWidth: 2,
+      },
+      {
+        label: "Cream Caramel",
+        data: [54, 43, 76, 56, 42, 81],
+        borderWidth: 2,
+      },
+      {
+        label: "Amnesia",
+        data: [32, 83, 60, 41, 79, 62],
+        borderWidth: 2,
+      },
+    ],
+  }
+
+  const soilChart = document.getElementById("soil-chart");
+  new Chart(soilChart, {
+    type: "line",
+    data: soilData,
+    options: {
+      scales: {
+        y: {
+          min: 0,
+          max: 100,
+        },
+      },
+    },
+  });
+  // 
+
 }
 
 function createChart(view, data, type, options, unit) {
