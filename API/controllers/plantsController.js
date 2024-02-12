@@ -13,7 +13,7 @@ const getPlants = (req, res) => {
   // Execute the query with the conditional filters and group by id to get the last record for each id
   PlantData.aggregate([
     { $match: query }, // Filter based on the query
-    { $sort: { createdAt: -1 } }, // Sort by id ascending and createdAt descending
+    { $sort: { id: 1, updatedAt: -1 } }, // Sort by id ascending and createdAt descending
     {
       $group: {
         _id: "$id",
@@ -27,15 +27,15 @@ const getPlants = (req, res) => {
         }
       }
     },
-    { $sort: { id: 1 } }, // Sort by id ascending and createdAt descending
+    { $sort: { id: 1 } },
     { $project: { _id: 0, updatedAt: 0, createdAt: 0, __v: 0 } } // Exclude _id and updatedAt fields
   ])
-  .then((data) => {
-    res.send(data);
-  })
-  .catch((err) => {
-    res.status(500).send(err);
-  });
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
 };
 
 const postPlants = (req, res) => {
