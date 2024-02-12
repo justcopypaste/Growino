@@ -51,12 +51,12 @@ const getPlants = (req, res) => {
   // Continue building the pipeline
   aggregationPipeline.push(
     { $sort: { createdAt: -1 } }, // Sort by createdAt in descending order
-    {
-      $group: {
-        _id: "$id", // Group by 'id'
-        soil: { $first: "$soil" }, // Get 'soil' of the latest record
-      },
-    },
+    // {
+    //   $group: {
+    //     _id: "$id", // Group by 'id'
+    //     soil: { $first: "$soil" }, // Get 'soil' of the latest record
+    //   },
+    // },
     {
       $project: {
         _id: 0, // Exclude MongoDB's '_id'
