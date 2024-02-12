@@ -6,7 +6,10 @@ const plantDataScheme = new mongoose.Schema(
     name: String,
     strain: String,
     tent: Number,
-    plantedDate: Date,
+    plantedDate: {
+      type: Date,
+      default: mongoose.now()
+    },
   },
   { timestamps: true }
 );
