@@ -3,8 +3,7 @@ const sensorController = require('../controllers/plantsController')
 
 const router = express.Router();
 
-router.get('/get', sensorController.getPlants)
-router.get('/getLast', sensorController.getLastRecords)
-router.post('/post', sensorController.postPlants)
+router.get('/', sensorController.getPlants)
+router.post('/', sensorController.postPlants)
 
 module.exports = router

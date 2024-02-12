@@ -1,79 +1,41 @@
 const PlantData = require("../models/plant");
 
-const getLastRecords = (req, res) => {
-  let tentQuery = req.query.tent;
-  let aggregationPipeline = [];
+const getPlants = (req, res) => {
+  let { tent } = req.query;
+  let query = {};
 
-  // If the 'tent' query parameter exists, add a $match stage to the pipeline
-  if (tentQuery) {
-    tentQuery = parseInt(tentQuery, 10); // Convert to number if needed
-    aggregationPipeline.push({ $match: { tent: tentQuery } });
+  // Check if tent query parameter exists
+  if (tent) {
+    tent = parseInt(tent, 10); // Ensure tent is an integer
+    query.tent = tent; // Add tent to query
   }
 
-  // Continue building the pipeline
-  aggregationPipeline.push(
-    { $sort: { createdAt: -1 } }, // Sort by createdAt in descending order
+  // Execute the query with the conditional filters and group by id to get the last record for each id
+  PlantData.aggregate([
+    { $match: query }, // Filter based on the query
+    { $sort: { createdAt: -1 } }, // Sort by id ascending and createdAt descending
     {
       $group: {
-        _id: "$id", // Group by 'id'
-        soil: { $first: "$soil" }, // Get 'soil' of the latest record
-      },
+        _id: "$id",
+        docs: { $push: "$$ROOT" } // Push all documents with the same id into an array
+      }
     },
     {
-      $project: {
-        _id: 0, // Exclude MongoDB's '_id'
-        id: "$_id", // Include the original 'id'
-        soil: 1, // Include the 'soil' field
-      },
-    }
-  );
-
-  // Execute the aggregation pipeline
-  PlantData.aggregate(aggregationPipeline)
-    .then((results) => {
-      res.send(results); // Handle the results
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
-};
-
-const getPlants = (req, res) => {
-  let tentQuery = req.query.tent;
-  let aggregationPipeline = [];
-
-  // If the 'tent' query parameter exists, add a $match stage to the pipeline
-  if (tentQuery) {
-    tentQuery = parseInt(tentQuery, 10); // Convert to number if needed
-    aggregationPipeline.push({ $match: { tent: tentQuery } });
-  }
-
-  // Continue building the pipeline
-  aggregationPipeline.push(
-    { $sort: { createdAt: -1 } }, // Sort by createdAt in descending order
-    // {
-    //   $group: {
-    //     _id: "$id", // Group by 'id'
-    //     soil: { $first: "$soil" }, // Get 'soil' of the latest record
-    //   },
-    // },
-    {
-      $project: {
-        _id: 0, // Exclude MongoDB's '_id'
-        id: "$_id", // Include the original 'id'
-        soil: 1, // Include the 'soil' field
-      },
-    }
-  );
-
-  // Execute the aggregation pipeline
-  PlantData.aggregate(aggregationPipeline)
-    .then((results) => {
-      res.send(results); // Handle the results
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
+      $replaceRoot: {
+        newRoot: {
+          $arrayElemAt: ["$docs", 0] // Get the first document in the array (latest record)
+        }
+      }
+    },
+    { $sort: { id: 1 } }, // Sort by id ascending and createdAt descending
+    { $project: { _id: 0, updatedAt: 0, createdAt: 0, __v: 0 } } // Exclude _id and updatedAt fields
+  ])
+  .then((data) => {
+    res.send(data);
+  })
+  .catch((err) => {
+    res.status(500).send(err);
+  });
 };
 
 const postPlants = (req, res) => {
@@ -104,5 +66,4 @@ const postPlants = (req, res) => {
 module.exports = {
   getPlants,
   postPlants,
-  getLastRecords,
 };
