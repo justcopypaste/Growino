@@ -32,6 +32,9 @@ app.get('/', (req, res) => {
 app.get('/dash', (req, res) => {
     res.render("views/dashboard.html")
 })
+app.get('/dashboard', (req, res) => {
+    res.render("dashboard/index.html")
+})
 app.get('/charts', (req, res) => {
     res.render("views/charts.html")
 })

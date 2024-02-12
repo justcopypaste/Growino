@@ -4,7 +4,6 @@ let temp = [],
   soil = [];
 
 document.addEventListener("DOMContentLoaded", () => {
-
   const powerChart = document.getElementById("power-chart");
   new Chart(powerChart, {
     type: "bar",
@@ -93,13 +92,19 @@ function getSensorData() {
       for (const reading of data) {
         if (reading.temperature) {
           temp.push(reading.temperature);
+        }
+        if (reading.humidity) {
           hum.push(reading.humidity);
-          power.push(reading.power)
+        }
+        if (reading.power) {
+          power.push(reading.power);
+        }
+        if (reading.soil) {
+          soil.push(reading.soil);
         }
       }
-      soil = data[0].soil
-
-      console.log(data[0]);
+    
+      console.log(soil);
 
       generateCharts()
     })
@@ -130,7 +135,7 @@ function generateCharts() {
   };
 
   const tempDonut = document.getElementById("temp-donut");
-  createChart(tempDonut, tempData, "doughnut", donutOptions, "⁰");
+  createChart(tempDonut, tempData, "doughnut", donutOptions, "⁰", "Temperatura");
   // 
 
   // HUMIDITY
@@ -149,7 +154,7 @@ function generateCharts() {
   };
 
   const humDonut = document.getElementById("hum-donut");
-  createChart(humDonut, humData, "doughnut", donutOptions, "%");
+  createChart(humDonut, humData, "doughnut", donutOptions, "%", "Humedad");
   // 
 
   // POWER
@@ -168,7 +173,7 @@ function generateCharts() {
   };
 
   const powerDonut = document.getElementById("power-donut");
-  createChart(powerDonut, powerData, "doughnut", donutOptions, "w");
+  createChart(powerDonut, powerData, "doughnut", donutOptions, "w", "Consumo");
   // 
 
   // SOIL
@@ -218,11 +223,9 @@ function generateCharts() {
 
 }
 
-function createChart(view, data, type, options, unit) {
-  var valueContainer =
-    view.parentElement.getElementsByClassName("donut-value")[0];
-
-  valueContainer.innerHTML = parseInt(data.datasets[0].data[0]) + unit;
+function createChart(view, data, type, options, unit, title) {
+  view.parentElement.getElementsByClassName("donut-value")[0].innerHTML = parseInt(data.datasets[0].data[0]) + unit;
+  view.parentElement.parentElement.getElementsByClassName("donut-title")[0].innerHTML = title
   new Chart(view, {
     type: type,
     data: data,
