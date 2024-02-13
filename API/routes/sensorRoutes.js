@@ -3,8 +3,8 @@ const sensorController = require('../controllers/sensorController')
 
 const router = express.Router();
 
-router.get('/get', sensorController.getSensors)
+router.get('/', sensorController.getSensors)
 router.get('/getLast', sensorController.getLastRead)
-router.post('/post', sensorController.postSensors)
+router.post('/', sensorController.postSensors)
 
 module.exports = router
