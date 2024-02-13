@@ -4,6 +4,7 @@ const app = express();
 const nunjucks = require("nunjucks");
 const db = require("./database");
 const camRoutes = require("./routes/camRoutes");
+const viewRoutes = require("./routes/viewRoutes");
 const sensorRoutes = require("./routes/sensorRoutes");
 const plantRoutes = require("./routes/plantsRoutes");
 const fs = require("fs");
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "njk");
 
+app.use("api", viewRoutes);
 app.use("/cam", camRoutes);
 app.use("/sensor", sensorRoutes);
 app.use("/plants", plantRoutes);
