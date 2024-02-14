@@ -22,8 +22,8 @@ app.use(express.json());
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "njk");
 
-app.use("/", viewRoutes);
-app.use("api", apiRoutes);
+app.use("api", viewRoutes);
+app.use("/", apiRoutes);
 
 // HTTP Server
 const httpServer = http.createServer(app);
