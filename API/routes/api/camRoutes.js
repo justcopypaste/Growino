@@ -1,5 +1,5 @@
 const express = require("express");
-const camController = require('../controllers/camController')
+const camController = require('../../controllers/camController')
 
 const router = express.Router();
 

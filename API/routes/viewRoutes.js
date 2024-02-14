@@ -1,13 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/home", (req, res) => {
-  console.log("GET API /home");
-  res.send("views/home.html");
+router.get("/dashboard", (req, res) => {
+    res.render("views/dashboard.html");
 });
-router.get("/endpoint", (req, res) => {
-  console.log("GET API /endpoint");
-  res.send("views/charts.html");
+
+router.get("/", (req, res) => {
+    res.render("views/home.html");
 });
 
 module.exports = router;

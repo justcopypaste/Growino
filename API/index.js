@@ -3,10 +3,8 @@ const cors = require("cors");
 const app = express();
 const nunjucks = require("nunjucks");
 const db = require("./database");
-const camRoutes = require("./routes/camRoutes");
 const viewRoutes = require("./routes/viewRoutes");
-const sensorRoutes = require("./routes/sensorRoutes");
-const plantRoutes = require("./routes/plantsRoutes");
+const apiRoutes = require("./routes/apiRoutes");
 const fs = require("fs");
 const http = require("http");
 const https = require("https");
@@ -24,10 +22,8 @@ app.use(express.json());
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "njk");
 
-app.use("api", viewRoutes);
-app.use("/cam", camRoutes);
-app.use("/sensor", sensorRoutes);
-app.use("/plants", plantRoutes);
+app.use("/", viewRoutes);
+app.use("api", apiRoutes);
 
 // HTTP Server
 const httpServer = http.createServer(app);
