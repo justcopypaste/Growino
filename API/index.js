@@ -57,8 +57,15 @@ const server = https.createServer((req, res) => {
 
   if (config) {
     // If a matching configuration is found, use it to handle the request
-    res.writeHead(200);
-    res.end(`Hello from ${subdomain}`);
+    const options = {
+      key: config.key,
+      cert: config.cert
+    };
+    const subdomainServer = https.createServer(options, (req, res) => {
+      res.writeHead(200);
+      res.end(`Hello from ${subdomain}`);
+    });
+    subdomainServer.emit('request', req, res);
   } else {
     // If no matching configuration is found, respond with a 404 Not Found
     res.writeHead(404);
