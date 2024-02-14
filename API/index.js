@@ -8,6 +8,7 @@ const apiRoutes = require("./routes/apiRoutes");
 const fs = require("fs");
 const http = require("http");
 const https = require("https");
+const subdomain = require("express-subdomain")
 
 app.use(cors());
 
@@ -22,8 +23,8 @@ app.use(express.json());
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "njk");
 
-app.use("api", viewRoutes);
 app.use("/", apiRoutes);
+app.use(subdomain('api', viewRoutes));
 
 // HTTP Server
 const httpServer = http.createServer(app);
