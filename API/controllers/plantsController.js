@@ -63,7 +63,21 @@ const postPlants = (req, res) => {
     });
 };
 
+const deletePlant = ((req, res) => {
+  if (req.query.id)
+    PlantData.findOneAndDelete({ id: req.query.id }, function (err) {
+      if (err) res.status(500).send(err)
+      res.status(200).sendJSON({ succes: true, message: "Eliminado Correctamente" })
+    });
+})
+
+const updatePlant = ((req, res) => {
+  res.send("update")
+})
+
 module.exports = {
   getPlants,
   postPlants,
+  deletePlant,
+  updatePlant
 };
