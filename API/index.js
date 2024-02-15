@@ -41,7 +41,7 @@ const certificate = fs.readFileSync(
 const credentials = { key: privateKey, cert: certificate };
 const httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(6969, () => {
+httpServer.listen(80, () => {
   console.log(`HTTP Server running on port 80`);
 });
 

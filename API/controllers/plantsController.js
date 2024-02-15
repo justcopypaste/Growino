@@ -67,7 +67,7 @@ const deletePlant = ((req, res) => {
   if (req.query.id)
     PlantData.findOneAndDelete({ id: req.query.id }, function (err) {
       if (err) res.status(500).send(err)
-      res.status(200).sendJSON({ succes: true, message: "Eliminado Correctamente" })
+      res.status(200).JSON({ succes: true, message: "Eliminado Correctamente" })
     });
 })
 
