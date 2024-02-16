@@ -64,11 +64,14 @@ const postPlants = (req, res) => {
 };
 
 const deletePlant = ((req, res) => {
-  if (req.query.id)
+  if (req.query.id && parseInt(req.query.id)) {
     PlantData.findOneAndDelete({ id: req.query.id }, function (err) {
       if (err) res.status(500).send(err)
       res.status(200).send({ succes: true, message: "Eliminado Correctamente" })
     });
+  } else {
+    res.status(500).send({succes: false, message: "Error en los datos enviados"})
+  }
 })
 
 const updatePlant = ((req, res) => {
