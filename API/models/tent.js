@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const tentDataScheme = new mongoose.Schema(
   {
+    userid: Number,
     id: Number,
     name: String,
     lightOn: Date,

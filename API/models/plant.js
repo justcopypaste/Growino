@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const plantDataScheme = new mongoose.Schema(
   {
+    userid: Number,
     id: Number,
     name: String,
     strain: String,

@@ -1,8 +1,17 @@
 const PlantData = require("../models/plant");
 
 const getPlants = (req, res) => {
-  let { tent } = req.query;
+  let { userid, tent } = req.query;
   let query = {};
+
+  if (userid) {
+    query.userid = userid;
+  } else {
+    res
+      .status(400)
+      .send({ success: false, message: "Error en los datos enviados" });
+    return;
+  }
 
   // Check if tent query parameter exists
   if (tent) {
@@ -17,18 +26,18 @@ const getPlants = (req, res) => {
     {
       $group: {
         _id: "$id",
-        docs: { $push: "$$ROOT" } // Push all documents with the same id into an array
-      }
+        docs: { $push: "$$ROOT" }, // Push all documents with the same id into an array
+      },
     },
     {
       $replaceRoot: {
         newRoot: {
-          $arrayElemAt: ["$docs", 0] // Get the first document in the array (latest record)
-        }
-      }
+          $arrayElemAt: ["$docs", 0], // Get the first document in the array (latest record)
+        },
+      },
     },
     { $sort: { id: 1 } },
-    { $project: { _id: 0, updatedAt: 0, createdAt: 0, __v: 0 } } // Exclude _id and updatedAt fields
+    { $project: { _id: 0, updatedAt: 0, createdAt: 0, __v: 0 } }, // Exclude _id and updatedAt fields
   ])
     .then((data) => {
       res.send(data);
@@ -63,24 +72,36 @@ const postPlants = (req, res) => {
     });
 };
 
-const deletePlant = ((req, res) => {
-  if (req.query.id && parseInt(req.query.id)) {
-    PlantData.findOneAndDelete({ id: req.query.id }, function (err) {
-      if (err) res.status(500).send(err)
-      res.status(200).send({ succes: true, message: "Eliminado Correctamente" })
-    });
+const deletePlant = (req, res) => {
+  if (
+    req.query.id &&
+    req.query.id === parseInt(req.query.id, 10) &&
+    req.query.userid &&
+    req.query.userid === parseInt(req.query.userid, 10)
+  ) {
+    PlantData.findOneAndDelete(
+      { userid: req.query.userid, id: req.query.id },
+      function (err) {
+        if (err) res.status(500).send(err);
+        res
+          .status(200)
+          .send({ success: true, message: "Eliminado Correctamente" });
+      }
+    );
   } else {
-    res.status(500).send({succes: false, message: "Error en los datos enviados"})
+    res
+      .status(400)
+      .send({ success: false, message: "Error en los datos enviados" });
   }
-})
+};
 
-const updatePlant = ((req, res) => {
-  res.send("update")
-})
+const updatePlant = (req, res) => {
+  res.send("update");
+};
 
 module.exports = {
   getPlants,
   postPlants,
   deletePlant,
-  updatePlant
+  updatePlant,
 };

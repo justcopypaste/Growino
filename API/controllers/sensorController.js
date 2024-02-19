@@ -1,38 +1,55 @@
 const sensors = require("../models/sensor");
 
 const getSensors = (req, res) => {
-  let { dateStart, dateEnd, tent } = req.query;
-  let query = {};
+  try {
+    let { userid, dateStart, dateEnd, tent } = req.query;
+    let query = {};
 
-  // Check if both dateStart and dateEnd query parameters exist
-  if (dateStart && dateEnd) {
-    dateStart = new Date(dateStart);
-    dateEnd = new Date(dateEnd);
+    if (userid) {
+      query.userid = parseInt(userid);
+    } else {
+      res
+        .status(400)
+        .send({ success: false, message: "Error en los datos enviados" });
+      return;
+    }
 
-    // Add date range to query
-    query.createdAt = {
-      $gte: dateStart,
-      $lte: dateEnd,
-    };
+    // Check if both dateStart and dateEnd query parameters exist
+    if (dateStart && dateEnd) {
+      dateStart = new Date(dateStart);
+      dateEnd = new Date(dateEnd);
+
+      // Add date range to query
+      query.createdAt = {
+        $gte: dateStart,
+        $lte: dateEnd,
+      };
+    }
+
+    // Check if tent query parameter exists
+    if (tent) {
+      tent = parseInt(tent, 10); // Ensure tent is an integer
+      query.tent = tent; // Add tent to query
+    }
+
+    // Execute the query with the conditional filters
+    sensors
+      .find(query)
+      .select("-_id -__v -updatedAt") // Exclude _id and __v fields
+      .sort("-createdAt") // Sort by createdAt in descending order (newest first)
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((err) => {
+        res
+          .status(500)
+          .send({ success: false, message: "Error inesperado", error: err });
+      });
+  } catch (error) {
+    res
+      .status(500)
+      .send({ success: false, message: "Error inesperado", error: error });
   }
-
-  // Check if tent query parameter exists
-  if (tent) {
-    tent = parseInt(tent, 10); // Ensure tent is an integer
-    query.tent = tent; // Add tent to query
-  }
-
-  // Execute the query with the conditional filters
-  sensors
-    .find(query)
-    .select("-_id -__v -updatedAt") // Exclude _id and __v fields
-    .sort("-createdAt") // Sort by createdAt in descending order (newest first)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
 };
 
 const getLastRead = (req, res) => {
