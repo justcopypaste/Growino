@@ -45,7 +45,7 @@ const login = (req, res) => {
           if (bcrypt.compareSync(password, user.password)) {
             let _user = user.toObject();
             delete _user.password;
-            res.status(200).send(_user);
+            res.status(200).send({ success: true, message: "Sesión iniciada con éxito", data: _user });
           } else {
             res
               .status(401)
