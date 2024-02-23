@@ -69,9 +69,10 @@ const getLastRead = (req, res) => {
 const postSensors = (req, res) => {
   let temperature = req.body.temperature || req.body.temp;
   let humidity = req.body.humidity || req.body.hum;
-  let { soil, power, tent } = req.body;
+  let { soil, power, tent, userid } = req.body;
   sensors
     .create({
+      userid: userid,
       temperature: temperature,
       humidity: humidity,
       soil: soil,

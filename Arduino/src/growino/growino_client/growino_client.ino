@@ -14,9 +14,9 @@ HTTPClient http;
 WiFiClient wifiClient;
 
 const char* ssid = "Crablock";
-const char* password = "notengoidea";
+const char* password = "Joako060601";
 
-String serverName = "http://growino.pidu.uy/sensor/";
+String serverName = "http://growino.app/sensor/";
 
 unsigned long lastTime = 0;
 unsigned long timerDelay = 600000;
