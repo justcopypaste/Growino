@@ -3,25 +3,22 @@
 #include <ArduinoJson.h>
 #include "DHT.h"
 
-#define DHTPIN 4 // Change this according to your ESP32 board's pinout
+#define DHTPIN 4  // Change this according to your ESP32 board's pinout
 #define DHTTYPE DHT11
 
 DHT dht(DHTPIN, DHTTYPE);
 
+const int userid = 1;
 const char* ssid = "Crablock";
 const char* password = "Joako060601";
 
 String serverUrl = "https://growino.app/api/sensor";
 
 unsigned long lastTime = 0;
-unsigned long timerDelay = 600000; // 10 minutes
-
-String hum = "0.0";
-String temp = "0.0";
-int userid = 1;
+unsigned long timerDelay = 600000;  // 10 minutes
 
 void setup() {
-  Serial.begin(115200); 
+  Serial.begin(115200);
   dht.begin();
   delay(4000);
   WiFi.begin(ssid, password);
@@ -32,7 +29,6 @@ void setup() {
   }
   Serial.println("");
   Serial.println("WiFi connected.");
-  getReadings();
   delay(500);
   postDataToServer();
 }
@@ -47,54 +43,52 @@ void loop() {
 }
 
 void postDataToServer() {
-  getReadings();
- 
-  if (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
-    HTTPClient http;   
-    http.begin(serverUrl);  
-    http.addHeader("Content-Type", "application/json");         
-    
-    StaticJsonDocument<200> doc; //JSON Object
+  if (WiFi.status() == WL_CONNECTED) {  //Check WiFi connection status
+    HTTPClient http;
+    http.begin(serverUrl);
+    http.addHeader("Content-Type", "application/json");
+
+    StaticJsonDocument<200> doc;
     doc["userid"] = userid;
-    doc["temp"] = temp;
-    doc["hum"] = hum;
-    JsonArray data = doc.createNestedArray("soil");
-    data.add("{id: 1, soil: 45}");
-    data.add("{id: 2, soil: 54}");
-    data.add("{id: 3, soil: 49}");
-     
+    doc["tent"] = 1;
+    // doc["temperature"] = getTemp();
+    // doc["humidity"] = getHum();
+    doc["temperature"] = random(21,30);
+    doc["humidity"] = random(40,60);
+    doc["power"] = 420;
+    
+    JsonArray soil = doc.createNestedArray("soil");
+    for (int i = 1; i < 4; i++) {
+      StaticJsonDocument<200> s;
+      s["id"] = i;
+      s["soil"] = random(70);
+      soil.add(s);
+    }
+
     String requestBody;
     serializeJson(doc, requestBody);
-     
+
     int httpResponseCode = http.POST(requestBody);
-    if (httpResponseCode>0) {
+    if (httpResponseCode > 0) {
       Serial.print("HTTP Response code: ");
       Serial.println(httpResponseCode);
-    }
-    else {
+    } else {
       Serial.print("Error code: ");
       Serial.println(httpResponseCode);
     }
     // Free resources
     http.end();
-  }
-  else {
+  } else {
     Serial.println("WiFi Disconnected");
   }
 }
 
-void getReadings(){
-    temp = getTemp();
-    hum = getHum();
-}
-
-String getTemp(){
+String getTemp() {
   float t = dht.readTemperature();
   if (isnan(t)) {
     Serial.println("Failed to read from DHT sensor!");
     return "0.0";
-  }
-  else {
+  } else {
     String temp = String(t, 1);
     return temp;
   }
@@ -105,8 +99,7 @@ String getHum() {
   if (isnan(h)) {
     Serial.println("Failed to read from DHT sensor!");
     return "0.0";
-  }
-  else {
+  } else {
     String hum = String(h, 1);
     return hum;
   }

@@ -52,6 +52,7 @@ const postPlants = (req, res) => {
     { id: req.body.id }, // search query
     {
       $set: {
+        userid: req.body.userid,
         name: req.body.name,
         strain: req.body.strain,
         tent: req.body.tent,
