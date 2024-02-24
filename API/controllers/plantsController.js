@@ -5,7 +5,7 @@ const getPlants = (req, res) => {
   let query = {};
 
   if (userid) {
-    query.userid = userid;
+    query.userid = parseInt(userid, 10);
   } else {
     res
       .status(400)
