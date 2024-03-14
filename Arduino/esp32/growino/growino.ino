@@ -12,7 +12,7 @@ const int userid = 1;
 const char* ssid = "Crablock";
 const char* password = "Joako060601";
 
-String serverUrl = "https://growino.app/api/sensor";
+String serverUrl = "https://www.growino.app/api/sensor";
 
 unsigned long lastTime = 0;
 unsigned long timerDelay = 600000;  // 10 minutes
