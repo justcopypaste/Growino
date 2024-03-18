@@ -43,5 +43,5 @@ wss.on('connection', function connection(ws) {
 });
 
 server.listen(PORT, () => {
-    console.log('Secure WebSocket server started at wss://localhost:8080');
+    console.log('Secure WebSocket server started at wss://localhost:4000');
 });

@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Growino</title>
+    <title>RTSP Stream Test</title>
+    <style>
+        #videoCanvas {
+            width: 640px;
+            height: 480px;
+            border: 1px solid black;
+        }
+    </style>
 </head>
-
 <body>
-    <a href="dashboard.html">dashboard</a>
-    <a href="charts.html">charts</a>
-
+    <script src="https://www.growino.app/jsmpeg.min.js"></script>
+    <canvas id="videoCanvas"></canvas>
+    <script>
+        const canvas = document.getElementById('videoCanvas');
+        const url = 'wss://www.growino.app:4000/'; // Change this to match your server's WebSocket address and port
+        new JSMpeg.Player(url, { canvas: canvas });
+    </script>
 </body>
-
 </html>
