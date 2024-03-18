@@ -1,30 +1,47 @@
 const fs = require('fs');
 const https = require('https');
-const Stream = require('node-rtsp-stream');
-const WebSocket = require('ws'); // Make sure to install this package if not already installed
+const WebSocket = require('ws');
+const spawn = require('child_process').spawn;
 
-// SSL certificate details
-const serverOptions = {
-  key: fs.readFileSync(__dirname + "/public/ssl/root/private.key", "utf8"),
-  cert: fs.readFileSync(__dirname + "/public/ssl/root/certificate.crt", "utf8")
-};
+const PORT = 4000
+const camUrl = "rtsp://www.growino.app:3000/videoMain"
 
-// Create an HTTPS server
-const server = https.createServer(serverOptions);
-server.listen(4000); // This is the port for secure WebSocket connections
+const privateKey = fs.readFileSync(__dirname + "/public/ssl/root/private.key", "utf8");
+const certificate = fs.readFileSync(__dirname + "/public/ssl/root/certificate.crt", "utf8");
 
-// Set up the WebSocket server
-new WebSocket.Server({ server });
-
-// Initialize your RTSP stream
-new Stream({
-  name: 'growino cam 0',
-  streamUrl: 'rtsp://www.growino.app:3000/videoMain',
-  wsPort: 4000, // Note: This is now using the secure port
-  ffmpegOptions: {
-    '-stats': '',
-    '-r': 30
-  }
+const server = https.createServer({
+    cert: certificate,
+    key: privateKey
 });
 
-console.log('Secure WebSocket server running on port 4000');
+const wss = new WebSocket.Server({ server });
+
+wss.on('connection', function connection(ws) {
+    console.log('Client connected for video stream');
+
+    const ffmpeg = spawn('ffmpeg', [
+        '-i', camUrl,
+        '-f', 'mpegts',
+        '-codec:v', 'mpeg1video',
+        '-b:v', '800k',
+        '-r', '30',
+        '-'  // Output to stdout
+    ]);
+
+    ffmpeg.stdout.on('data', function(data) {
+        ws.send(data);
+    });
+
+    ffmpeg.stderr.on('data', function(data) {
+        console.error(`FFmpeg stderr: ${data}`);
+    });
+
+    ws.on('close', function close() {
+        console.log('Client disconnected');
+        ffmpeg.kill('SIGINT');  // Stops FFmpeg
+    });
+});
+
+server.listen(PORT, () => {
+    console.log('Secure WebSocket server started at wss://localhost:8080');
+});
