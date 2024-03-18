@@ -1,62 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Growino</title>
-    <link rel="stylesheet" href="css/home.css"/>
-  </head>
-  <body>
-    <header>
-      <!-- Hamburger Menu Icon -->
-      <div class="hamburger-menu" id="menu-toggle">
-          <span></span>
-          <span></span>
-          <span></span>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Growino</title>
+  <link rel="stylesheet" href="css/home.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmpeg/0.4/jsmpeg.min.js"></script>
+</head>
+
+<body>
+  <header>
+    <!-- Hamburger Menu Icon -->
+    <div class="hamburger-menu" id="menu-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <h2 class="app-name">Growino</h2>
+
+    <!-- Navigation Links -->
+    <nav class="main-nav">
+      <div class="left-container">
+        <a href="#" class="home">home</a>
+        <a href="#" class="products">products</a>
+        <a href="#" class="tutorials">tutorials</a>
       </div>
-      <h2 class="app-name">Growino</h2>
-  
-      <!-- Navigation Links -->
-      <nav class="main-nav">
-          <div class="left-container">
-              <a href="#" class="home">home</a>
-              <a href="#" class="products">products</a>
-              <a href="#" class="tutorials">tutorials</a>
-          </div>
-          <img src="/images/logo.png" alt="" class="logo-pc" />
-          <div class="links-container">
-              <a href="#" class="contact">contact</a>
-              <a href="#" class="about">about</a>
-              <a href="#" onclick="switchTheme()" class="switch-theme" id="switch">
-                  <img src="/images/light-switch.png" alt="Toggle Theme" class="toggle-switch">
-              </a>
-          </div>
-      </nav>
+      <img src="/images/logo.png" alt="" class="logo-pc" />
+      <div class="links-container">
+        <a href="#" class="contact">contact</a>
+        <a href="#" class="about">about</a>
+        <a href="#" onclick="switchTheme()" class="switch-theme" id="switch">
+          <img src="/images/light-switch.png" alt="Toggle Theme" class="toggle-switch">
+        </a>
+      </div>
+    </nav>
   </header>
 
-    <section class="introduction">
-      <div class="top-container">
-        <img src="/images/logo.png" alt="" class="left-image" />
-        <div class="desciption-container">
-          <img src="../images/logo.png" alt="" class="mobile-logo">
-          <h1 class="title">Indoor Growing<br>Automation</h1>
-          <h3 class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</h3>
-        </div>
-        <img src="/images/logo.png" alt="" class="right-image" />
+  <section class="introduction">
+    <div class="top-container">
+      <img src="/images/logo.png" alt="" class="left-image" />
+      <div class="desciption-container">
+        <img src="../images/logo.png" alt="" class="mobile-logo">
+        <h1 class="title">Indoor Growing<br>Automation</h1>
+        <h3 class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+          incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+          esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+          officia deserunt mollit anim id est laborum.</h3>
       </div>
+      <img src="/images/logo.png" alt="" class="right-image" />
+    </div>
 
-      <div class="plants">
-        <img src="/images/plant-1.png" alt="" class="plant" />
-        <img src="/images/plant-2.png" alt="" class="plant" />
-        <img src="/images/plant-3.png" alt="" class="plant" />
-        <img src="/images/plant-4.png" alt="" class="plant" />
-        <img src="/images/plant-5.png" alt="" class="plant" />
-        <img src="/images/plant-6.png" alt="" class="plant" />
-      </div>
-    </section>
-    <section class="products"></section>
-    <section class="contact"></section>
+    <div class="plants">
+      <img src="/images/plant-1.png" alt="" class="plant" />
+      <img src="/images/plant-2.png" alt="" class="plant" />
+      <img src="/images/plant-3.png" alt="" class="plant" />
+      <img src="/images/plant-4.png" alt="" class="plant" />
+      <img src="/images/plant-5.png" alt="" class="plant" />
+      <img src="/images/plant-6.png" alt="" class="plant" />
+    </div>
+  </section>
 
-    <script src="scripts/home.js"></script>
-  </body>
+  <section class="cam">
+    <div id="videoWrapper" style="width:640px; height:480px">
+      <canvas id="videoCanvas"></canvas>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+          var canvas = document.getElementById('videoCanvas');
+          var url = 'ws://www.growino.app:3001/';
+          var player = new JSMpeg.Player(url, { canvas: canvas });
+      })
+    </script>
+  </section>
+
+  <section class="products"></section>
+  <section class="contact"></section>
+
+  <script src="scripts/home.js"></script>
+</body>
+
 </html>
