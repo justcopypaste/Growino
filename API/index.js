@@ -29,11 +29,19 @@ app.use('/api', apiRoutes);
 const httpServer = http.createServer(app);
 
 // HTTPS Server
+// const privateKey = fs.readFileSync(
+//   __dirname + "/public/ssl/root/private.key",
+//   "utf8"
+// );
+// const certificate = fs.readFileSync(
+//   __dirname + "/public/ssl/root/certificate.crt",
+//   "utf8"
+// );
 const credentials = {
-  key: fs.readFileSync(path.join(__dirname, '/etc/letsencrypt/live/www.growino.app/', 'privkey.pem')),
-  cert: fs.readFileSync(path.join(__dirname, '/etc/letsencrypt/live/www.growino.app/', 'cert.pem')),
-  ca: fs.readFileSync(path.join(__dirname, '/etc/letsencrypt/live/www.growino.app/', 'chain.pem'))
-};
+  key: fs.readFileSync('/etc/letsencrypt/live/www.growino.app/', 'privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/www.growino.app/', 'cert.pem'),
+  ca: fs.readFileSync('/etc/letsencrypt/live/www.growino.app/', 'chain.pem')
+ };
 const httpsServer = https.createServer(credentials, app);
 
 httpServer.listen(80, () => {
