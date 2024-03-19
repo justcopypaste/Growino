@@ -8,6 +8,7 @@ const apiRoutes = require("./routes/apiRoutes");
 const fs = require("fs");
 const http = require("http");
 const https = require("https");
+const path = require('path');
 
 app.use(cors());
 
@@ -29,19 +30,14 @@ app.use('/api', apiRoutes);
 const httpServer = http.createServer(app);
 
 // HTTPS Server
-const privateKey = fs.readFileSync(
-  __dirname + "/public/ssl/www/privkey.pem",
-  "utf8"
-);
-const certificate = fs.readFileSync(
-  __dirname + "/public/ssl/www/cert.pem",
-  "utf8"
-);
-const chain = fs.readFileSync(
-  __dirname + "/public/ssl/www/chain.pem",
-  "utf8"
-);
-const credentials = { key: privateKey, cert: certificate, ca: chain };
+
+// Paths to your certificate files
+const certPath = path.join('/etc', 'letsencrypt', 'live', 'www.growino.app', 'fullchain.pem');
+const keyPath = path.join('/etc', 'letsencrypt', 'live', 'www.growino.app', 'privkey.pem');
+const certificate = fs.readFileSync(certPath, 'utf8');
+const privateKey = fs.readFileSync(keyPath, 'utf8');
+
+const credentials = { key: privateKey, cert: certificate };
 const httpsServer = https.createServer(credentials, app);
 
 httpServer.listen(80, () => {
