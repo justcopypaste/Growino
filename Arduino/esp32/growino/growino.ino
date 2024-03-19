@@ -3,14 +3,16 @@
 #include <ArduinoJson.h>
 #include "DHT.h"
 
-#define DHTPIN 4  // Change this according to your ESP32 board's pinout
+#define DHTPIN D4  // Change this according to your ESP32 board's pinout
 #define DHTTYPE DHT11
 
 DHT dht(DHTPIN, DHTTYPE);
 
+const int plants = 3;
 const int userid = 1;
-const char* ssid = "Crablock";
-const char* password = "Joako060601";
+const int tent = 1;
+const char* ssid = "Apto 10";
+const char* password = "alohomora123";
 
 String serverUrl = "https://www.growino.app/api/sensor";
 
@@ -50,15 +52,13 @@ void postDataToServer() {
 
     StaticJsonDocument<200> doc;
     doc["userid"] = userid;
-    doc["tent"] = 1;
-    // doc["temperature"] = getTemp();
-    // doc["humidity"] = getHum();
-    doc["temperature"] = random(21,30);
-    doc["humidity"] = random(40,60);
+    doc["tent"] = tent;
+    doc["temperature"] = getTemp();
+    doc["humidity"] = getHum();
     doc["power"] = 420;
     
     JsonArray soil = doc.createNestedArray("soil");
-    for (int i = 1; i < 4; i++) {
+    for (int i = 1; i <= plants; i++) {
       StaticJsonDocument<200> s;
       s["id"] = i;
       s["soil"] = random(70);
@@ -67,6 +67,8 @@ void postDataToServer() {
 
     String requestBody;
     serializeJson(doc, requestBody);
+
+    Serial.println(requestBody);
 
     int httpResponseCode = http.POST(requestBody);
     if (httpResponseCode > 0) {
