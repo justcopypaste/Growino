@@ -2,12 +2,15 @@ const fs = require('fs');
 const https = require('https');
 const WebSocket = require('ws');
 const spawn = require('child_process').spawn;
+const path = require('path');
 
 const PORT = 4000
 const camUrl = "rtsp://www.growino.app:3000/videoMain"
 
-const privateKey = fs.readFileSync(__dirname + "/public/ssl/root/private.key", "utf8");
-const certificate = fs.readFileSync(__dirname + "/public/ssl/root/certificate.crt", "utf8");
+const certPath = path.join('/etc', 'letsencrypt', 'live', 'www.growino.app', 'fullchain.pem');
+const keyPath = path.join('/etc', 'letsencrypt', 'live', 'www.growino.app', 'privkey.pem');
+const certificate = fs.readFileSync(certPath, 'utf8');
+const privateKey = fs.readFileSync(keyPath, 'utf8');
 
 const server = https.createServer({
     cert: certificate,
