@@ -20,7 +20,7 @@ const int tent = 1;
 const char* ssid = "Apto 10";
 const char* password = "alohomora123";
 
-const String serverUrl = "https://www.growino.app/api/sensor";
+const String serverUrl = "http://www.growino.app/api/sensor";
 
 unsigned long lastTime = 0;
 unsigned long timerDelay = 600000;
@@ -78,6 +78,7 @@ void postDataToServer() {
     serializeJson(doc, requestBody);
 
     HTTPClient http;
+    http.setTimeout(5000);
     http.begin(wifiClient, serverUrl);
     http.addHeader("Content-Type", "application/json");
 

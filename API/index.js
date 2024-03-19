@@ -30,14 +30,18 @@ const httpServer = http.createServer(app);
 
 // HTTPS Server
 const privateKey = fs.readFileSync(
-  __dirname + "/public/ssl/root/private.key",
+  __dirname + "/public/ssl/www/privkey.pem",
   "utf8"
 );
 const certificate = fs.readFileSync(
-  __dirname + "/public/ssl/root/certificate.crt",
+  __dirname + "/public/ssl/www/cert.pem",
   "utf8"
 );
-const credentials = { key: privateKey, cert: certificate };
+const chain = fs.readFileSync(
+  __dirname + "/public/ssl/www/chain.pem",
+  "utf8"
+);
+const credentials = { key: privateKey, cert: certificate, ca: chain };
 const httpsServer = https.createServer(credentials, app);
 
 httpServer.listen(80, () => {
