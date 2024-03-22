@@ -2,8 +2,12 @@ const sensors = require("../models/sensor");
 
 const getSensors = (req, res) => {
   try {
-    let { userid, dateStart, dateEnd, tent } = req.query;
+    let { userid, dateStart, dateEnd, tent, limit } = req.query;
     let query = {};
+
+    if(!limit){
+      limit = 0
+    }
 
     if (userid) {
       query.userid = parseInt(userid);
@@ -37,6 +41,7 @@ const getSensors = (req, res) => {
       .find(query)
       .select("-_id -__v -updatedAt") // Exclude _id and __v fields
       .sort("-createdAt") // Sort by createdAt in descending order (newest first)
+      .limit(limit)
       .then((data) => {
         res.send(data);
       })
