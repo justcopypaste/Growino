@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "njk");
 
-app.use("/", viewRoutes);
+// app.use("/", viewRoutes);
 app.use('/api', apiRoutes);
 
 // HTTP Server
