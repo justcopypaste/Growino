@@ -40,10 +40,10 @@ const privateKey = fs.readFileSync(keyPath, 'utf8');
 const credentials = { key: privateKey, cert: certificate };
 const httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(80, () => {
+httpServer.listen(421, () => {
   console.log(`HTTP Server running on port 80`);
 });
 
-httpsServer.listen(443, () => {
+httpsServer.listen(420, () => {
   console.log(`HTTPS Server running on port 443`);
 });
