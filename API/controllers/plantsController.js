@@ -74,11 +74,10 @@ const postPlants = (req, res) => {
 };
 
 const deletePlant = (req, res) => {
+  console.log(req.query);
   if (
     req.query.id &&
-    req.query.id === parseInt(req.query.id, 10) &&
-    req.query.userid &&
-    req.query.userid === parseInt(req.query.userid, 10)
+    req.query.userid
   ) {
     PlantData.findOneAndDelete(
       { userid: req.query.userid, id: req.query.id },
