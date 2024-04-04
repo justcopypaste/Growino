@@ -74,7 +74,6 @@ const postPlants = (req, res) => {
 };
 
 const deletePlant = (req, res) => {
-  console.log(req.query);
   if (
     req.query.id &&
     req.query.userid
