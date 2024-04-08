@@ -26,6 +26,12 @@ app.set("view engine", "njk");
 // app.use("/", viewRoutes);
 app.use('/api', apiRoutes);
 
+app.post('/test', (req, res)=>{
+  console.log(req);
+  console.log(req.body);
+  res.status(201).json({success: true})
+})
+
 // HTTP Server
 const httpServer = http.createServer(app);
 
