@@ -19,8 +19,8 @@ const char* ssid = "Apto 10";
 const char* password = "alohomora123";
 
 unsigned long lastTime = 0;
-// unsigned long timerDelay = 600000;
-unsigned long timerDelay = 10000;
+unsigned long timerDelay = 600000;
+// unsigned long timerDelay = 60000;
 
 String hum = "0.0";
 String temp = "0.0";
@@ -56,8 +56,8 @@ void connect_wifi() {
 
   Serial.println("");
   Serial.println("WiFi connected");
-  Serial.println("IP: ");
-  Serial.print(WiFi.localIP());
+  Serial.print("IP: ");
+  Serial.println(WiFi.localIP());
 }
 
 void postDataToServer() {
@@ -78,16 +78,12 @@ void postDataToServer() {
 
   if ((WiFi.status() == WL_CONNECTED)) {
     std::unique_ptr<BearSSL::WiFiClientSecure> client(new BearSSL::WiFiClientSecure);
-
-    // Ignore SSL certificate validation
     client->setInsecure();
 
-    //create an HTTPClient instance
     HTTPClient https;
 
-    //Initializing an HTTPS communication using the secure client
     Serial.print("[HTTPS] begin...\n");
-    if (https.begin(*client, "https://www.growino.app:420/api/test")) {  // HTTPS
+    if (https.begin(*client, "https://www.growino.app:420/api/sensor")) {  // HTTPS
       Serial.print("[HTTPS] POST...\n");
 
       String requestBody;
@@ -95,6 +91,7 @@ void postDataToServer() {
       Serial.print("Body: ");
       Serial.println(requestBody);
 
+      https.addHeader("Content-Type", "application/json");
       int httpCode = https.POST(requestBody);
       // httpCode will be negative on error
       if (httpCode > 0) {
