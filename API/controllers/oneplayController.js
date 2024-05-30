@@ -1,10 +1,10 @@
 const fs = require("fs");
 
-const get = (req, res) => res.sendFile(__dirname + "../public/oneplayers.json");
+const get = (req, res) => res.sendFile(__dirname + "/../public/oneplayers.json");
 
 const post = (req, res) => {
   if (req.params.function && req.params.name) {
-    fs.readFile(__dirname + "../public/oneplayers.json", (err, data) => {
+    fs.readFile(__dirname + "/../public/oneplayers.json", (err, data) => {
       if (err) {
         console.log("ERROR: " + err);
         return res.status(500).json({
