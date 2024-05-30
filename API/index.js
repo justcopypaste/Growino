@@ -5,10 +5,11 @@ const nunjucks = require("nunjucks");
 const db = require("./database");
 const viewRoutes = require("./routes/viewRoutes");
 const apiRoutes = require("./routes/apiRoutes");
+const oneplayController = require("./controllers/oneplayController");
 const fs = require("fs");
 const http = require("http");
 const https = require("https");
-const path = require('path');
+const path = require("path");
 
 app.use(cors());
 
@@ -24,16 +25,31 @@ app.use(express.static(__dirname + "/public"));
 app.set("view engine", "njk");
 
 // app.use("/", viewRoutes);
-app.use('/api', apiRoutes);
+app.use("/api", apiRoutes);
+
+app.get("/oneplay", oneplayController.get);
+app.post("/oneplay", oneplayController.post);
 
 // HTTP Server
 const httpServer = http.createServer(app);
 
 // Paths to your certificate files
-const certPath = path.join('/etc', 'letsencrypt', 'live', 'www.growino.app', 'fullchain.pem');
-const keyPath = path.join('/etc', 'letsencrypt', 'live', 'www.growino.app', 'privkey.pem');
-const certificate = fs.readFileSync(certPath, 'utf8');
-const privateKey = fs.readFileSync(keyPath, 'utf8');
+const certPath = path.join(
+  "/etc",
+  "letsencrypt",
+  "live",
+  "www.growino.app",
+  "fullchain.pem"
+);
+const keyPath = path.join(
+  "/etc",
+  "letsencrypt",
+  "live",
+  "www.growino.app",
+  "privkey.pem"
+);
+const certificate = fs.readFileSync(certPath, "utf8");
+const privateKey = fs.readFileSync(keyPath, "utf8");
 
 // HTTPS Server
 const credentials = { key: privateKey, cert: certificate };
