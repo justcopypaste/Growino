@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const get = (req, res) => res.sendFile(__dirname + "/public/oneplayers.json");
+const get = (req, res) => res.sendFile(__dirname + "../public/oneplayers.json");
 
 const post = (req, res) => {
   if (req.params.function && req.params.name) {
