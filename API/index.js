@@ -5,7 +5,7 @@ const nunjucks = require("nunjucks");
 const db = require("./database");
 const viewRoutes = require("./routes/viewRoutes");
 const apiRoutes = require("./routes/apiRoutes");
-const oneplayController = require("./controllers/oneplayController");
+const oneplayController = require("./oneplayController");
 const fs = require("fs");
 const http = require("http");
 const https = require("https");
@@ -28,7 +28,7 @@ app.set("view engine", "njk");
 app.use("/api", apiRoutes);
 
 app.get("/oneplay", oneplayController.get);
-app.post("/oneplay", oneplayController.post);
+app.post("/oneplay/:function/:name", oneplayController.post);
 
 // HTTP Server
 const httpServer = http.createServer(app);
